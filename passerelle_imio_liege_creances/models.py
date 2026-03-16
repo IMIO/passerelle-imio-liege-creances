@@ -63,22 +63,22 @@ class LiegeCreances(BaseResource):
         parameters={
             "user_id": {
                 "description": "Identifiant du redevable",
-                "example_value": "00000000097",
+                "example_value": "65112735187",
             },
             "numero_document": {
                 "description": "Numéro de document",
-                "example_value": "123456",
+                "example_value": "LR-99990001",
             },
             "requester_id": {
                 "description": "Identifiant du demandeur",
-                "example_value": "00000000097",
+                "example_value": "65112735187",
             },
         },
         perm="can_access",
         display_category="Document",
     )
     def read_document(self, request, user_id, numero_document, requester_id):
-        url = f"{self.url}/api/creances"  # Url et endpoint à contacter
+        url = f"{self.url}api/creances"  # Url et endpoint à contacter
         params = {
             "redevableId": user_id,
             "numeroDocument": numero_document,
