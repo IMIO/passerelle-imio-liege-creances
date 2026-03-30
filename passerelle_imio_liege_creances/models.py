@@ -43,20 +43,6 @@ class LiegeCreances(BaseResource):
 
     @endpoint(
         methods=["get"],
-        name="test",
-        perm="can_access",
-        description="Valider la connexion entre Téléservices et VDL [NON Fonctionnel]",
-        long_description="Cette méthode permet de vérifier si les données de connexion renseignées pour accéder aux "
-        "Web Services sont correctes et d’obtenir des informations sur les versions installées.",
-        display_order=0,
-        display_category="Test",
-    )
-    def test(self, request):
-        url = f"{self.url}@infos"  # Url et endpoint à contacter
-        return self.session.get(url).json()
-
-    @endpoint(
-        methods=["get"],
         name="read-document",
         description="Récupérer les créances d'un redevable par numéro de document",
         long_description="Retourne la liste des créances pour un redevable et un numéro de document donnés",
@@ -103,4 +89,14 @@ class LiegeCreances(BaseResource):
         except RequestException as e:
             self.logger.warning(f"VDL Creances Connector Error: {e} {json_response}")
             raise APIError(f"VDL Creances Connector Error: {e} {json_response}")
+
+        data = json_response.get("data")
+
+        for index, creance in enumerate(data):
+            id_list = f"{creance.get('vcs')}-{creance.get('invoice')}"
+            text_list = f"{creance.get('libelle')} - {creance.get('dateEnvoi')} - {float(creance.get('montant', 0)):.2f}€"
+            data[index]["id"] = id_list
+            data[index]["text"] = text_list
+
+        json_response["data"] = data
         return json_response
