@@ -94,7 +94,7 @@ class LiegeCreances(BaseResource):
 
         for index, creance in enumerate(data):
             id_list = f"{creance.get('vcs')}-{creance.get('invoice')}"
-            text_list = f"{creance.get('libelle')} - {creance.get('dateEnvoi')} - {float(creance.get('montant', 0)):.2f}€"
+            text_list = f"{creance.get('invoice')} - {creance.get('libelle')} - envoi {creance.get('dateEnvoi')} - {float(creance.get('montant', 0)):.2f}€"
             data[index]["id"] = id_list
             data[index]["text"] = text_list
 
